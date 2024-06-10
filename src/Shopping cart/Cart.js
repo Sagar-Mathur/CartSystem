@@ -8,18 +8,27 @@ import e from "cors";
 
 function Cart() {
     const [search,setSearch]=useState('')
-    const itemname = ['Chicken Burgur', 'Aloo tikki', 'Cheese Burgur', 'Crispy Burgur', 'Double Aloo tikki', 'Veggie Burger', 'Mushroom Swiss Burger', 'BBQ Bacon Burger', 'Classic Cheeseburger'];
+    const [searchItem,setSearchItem]=useState('')
+    const [itemname,setItemName] = useState(['Chicken Burger', 'Aloo tikki', 'Cheese Burger', 'Crispy Burger', 'Double Aloo tikki', 'Veggie Burger', 'Mushroom Swiss Burger', 'BBQ Bacon Burger', 'Classic Cheese burger']);
     const item_img = ['burgur-1.png'];
     const item_price = [300]
     const Searchbar = (e) => {
         setSearch(e.target.value)
         showlist(e)
-        console.log(search)
+        
     }
-   
+    const Searchproduct=(ele)=>{
+        setSearchItem(ele)
+        const foundItem = itemname.filter(item=> item===ele)
+     setItemName(foundItem)
+     setSearch(ele)
+    }  
+        
+
     const filteredData = itemname.filter(item =>
-        item.toLowerCase().startsWith(search.toLowerCase())
+        item.toLowerCase().includes(search.toLowerCase())
       );
+    
      
       console.log(filteredData)
      function showlist(e){
@@ -27,7 +36,8 @@ function Cart() {
         if(e.target.value !== ''){
             id.style.display='block'; 
         }else if(e.target.value == ''){
-            id.style.display='none';  
+            id.style.display='none'; 
+            setItemName(['Chicken Burger', 'Aloo tikki', 'Cheese Burger', 'Crispy Burger', 'Double Aloo tikki', 'Veggie Burger', 'Mushroom Swiss Burger', 'BBQ Bacon Burger', 'Classic Cheese burger']) 
 
         }
      }
@@ -39,10 +49,10 @@ function Cart() {
                     <input type="search" className="search-box" placeholder="Search here..." name="search" value={search}  onChange={Searchbar}
                     />
 
-                    <ul className="sugestion-list" id="suggest" >
-                    {filteredData.map((i,index)=>(
+                    <ul className="sugestion-list list-group" id="suggest" >
+                    {filteredData.map((ele,index)=>(
 
-                        <li style={{listStyleType:'none'}} key={index}>{i}</li>
+                        <li onClick={()=>Searchproduct(ele)} id="list" className="list list-group-item list-group-item-action" style={{listStyleType:'none'}} key={index}>{ele}</li>
                     ))}
                     </ul>
 
